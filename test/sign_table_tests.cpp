@@ -52,6 +52,19 @@ namespace lqe {
     SECTION("Has 3 columns") {
       REQUIRE(t.num_cols() == 3);
     }
+
+    SECTION("First expression has sign NEGATIVE on interval 0") {
+      REQUIRE(t.sign_on_interval(0, 0) == NEGATIVE);
+    }
+
+    SECTION("First expression has sign Zero on interval 1") {
+      REQUIRE(t.sign_on_interval(0, 1) == ZERO);
+    }
+
+    SECTION("First expression has sign Positive on interval 2") {
+      REQUIRE(t.sign_on_interval(0, 2) == POSITIVE);
+    }
+    
   }
   
   
