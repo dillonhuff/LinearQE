@@ -29,7 +29,8 @@ namespace lqe {
 	  // of this expression to zero
 	  set_sign(poly_index, root_interval_index, ZERO);
 
-	  // Set all intervals before it to be negative
+	  // Set all intervals before the zero
+	  // NOTE: Actually need to check derivative!!!
 	  for (int row_index = 0; row_index < root_interval_index; row_index ++) {
 	    set_sign(poly_index, row_index, NEGATIVE);
 	  }

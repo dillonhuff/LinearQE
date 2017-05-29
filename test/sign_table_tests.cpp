@@ -23,7 +23,7 @@ namespace lqe {
 
   TEST_CASE("Sign table with 2 non constant entries and different roots has 5 rows") {
     vector<linear_expr> exprs{linear_expr(1, {{"5"}}),
-	linear_expr(1, {{"3"}})};
+	linear_expr(1, {{"-3"}})};
     vector<vector<unsigned> > order{{0}, {1}};
     
     sign_table t(exprs, order);
@@ -34,6 +34,10 @@ namespace lqe {
 
     SECTION("Has 2 columns") {
       REQUIRE(t.num_cols() == 2);
+    }
+
+    SECTION("Expression 2 has sign positive sign on interval 0") {
+      REQUIRE(t.sign_on_interval(1, 0) == POSITIVE);
     }
   }
 
@@ -63,6 +67,30 @@ namespace lqe {
 
     SECTION("First expression has sign Positive on interval 2") {
       REQUIRE(t.sign_on_interval(0, 2) == POSITIVE);
+    }
+
+    SECTION("Second expression has sign NEGATIVE on interval 0") {
+      REQUIRE(t.sign_on_interval(1, 0) == NEGATIVE);
+    }
+
+    SECTION("Second expression has sign Zero on interval 1") {
+      REQUIRE(t.sign_on_interval(1, 1) == ZERO);
+    }
+
+    SECTION("Second expression has sign Positive on interval 2") {
+      REQUIRE(t.sign_on_interval(1, 2) == POSITIVE);
+    }
+
+    SECTION("Third expression has sign NEGATIVE on interval 0") {
+      REQUIRE(t.sign_on_interval(2, 0) == NEGATIVE);
+    }
+
+    SECTION("Third expression has sign Zero on interval 1") {
+      REQUIRE(t.sign_on_interval(2, 1) == ZERO);
+    }
+
+    SECTION("Third expression has sign Positive on interval 2") {
+      REQUIRE(t.sign_on_interval(2, 2) == POSITIVE);
     }
     
   }
