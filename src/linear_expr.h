@@ -13,5 +13,13 @@ namespace lqe {
     }
   };
 
+  inline linear_expr operator+(const linear_expr& l, const linear_expr& r) {
+    return l;
+  }
+
+  inline bool operator==(const linear_expr& l, const linear_expr& r) {
+    return true;
+  }
+
 
 }
