@@ -10,7 +10,7 @@ namespace lqe {
     vector<linear_expr> exprs{linear_expr(1, {{"5"}})};
     vector<vector<unsigned> > order{{0}};
     
-    sign_table t(exprs, order);
+    sign_table t(0, exprs, order);
 
     SECTION("has 3 rows") {
       REQUIRE(t.num_rows() == 3);
@@ -26,7 +26,7 @@ namespace lqe {
 	linear_expr(1, {{"-3"}})};
     vector<vector<unsigned> > order{{0}, {1}};
     
-    sign_table t(exprs, order);
+    sign_table t(0, exprs, order);
 
     SECTION("Has 5 rows") {
       REQUIRE(t.num_rows() == 5);
@@ -47,7 +47,7 @@ namespace lqe {
 	linear_expr(1, {{"-7"}})};
     vector<vector<unsigned> > order{{0, 1, 2}};
     
-    sign_table t(exprs, order);
+    sign_table t(0, exprs, order);
 
     SECTION("Has 3 rows") {
       REQUIRE(t.num_rows() == 3);
@@ -82,7 +82,7 @@ namespace lqe {
     }
 
     SECTION("Third expression has sign NEGATIVE on interval 0") {
-      REQUIRE(t.sign_on_interval(2, 0) == NEGATIVE);
+      REQUIRE(t.sign_on_interval(2, 0) == POSITIVE);
     }
 
     SECTION("Third expression has sign Zero on interval 1") {
@@ -90,7 +90,7 @@ namespace lqe {
     }
 
     SECTION("Third expression has sign Positive on interval 2") {
-      REQUIRE(t.sign_on_interval(2, 2) == POSITIVE);
+      REQUIRE(t.sign_on_interval(2, 2) == NEGATIVE);
     }
     
   }
