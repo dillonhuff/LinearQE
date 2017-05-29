@@ -36,6 +36,23 @@ namespace lqe {
       REQUIRE(t.num_cols() == 2);
     }
   }
+
+  TEST_CASE("Sign table with 3 non constant entries with the same roots") {
+    vector<linear_expr> exprs{linear_expr(1, {{"5"}}),
+	linear_expr(1, {{"3"}}),
+	linear_expr(1, {{"-7"}})};
+    vector<vector<unsigned> > order{{0, 1, 2}};
+    
+    sign_table t(exprs, order);
+
+    SECTION("Has 3 rows") {
+      REQUIRE(t.num_rows() == 3);
+    }
+
+    SECTION("Has 3 columns") {
+      REQUIRE(t.num_cols() == 3);
+    }
+  }
   
   
 }

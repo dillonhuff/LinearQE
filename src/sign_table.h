@@ -16,6 +16,7 @@ namespace lqe {
 	       const std::vector<std::vector<unsigned>>& order) {
       nrows = (order.size() - 1) + order.size() + 2;
       ncols = exprs.size();
+
     }
 
     int num_rows() const { return nrows; }
