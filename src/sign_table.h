@@ -17,6 +17,7 @@ namespace lqe {
       nrows = (order.size() - 1) + order.size() + 2;
       ncols = exprs.size();
 
+      signs.resize(nrows*ncols);
     }
 
     int num_rows() const { return nrows; }
