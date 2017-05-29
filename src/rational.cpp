@@ -1,4 +1,4 @@
-#inclue "rational.h"
+#include "rational.h"
 
 namespace lqe {
 
