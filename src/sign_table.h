@@ -60,7 +60,8 @@ namespace lqe {
 	}
       }
 
-      assert(false);
+      //assert(false);
+      return -1;
     }
 
     void set_sign(const int expr_index, const int interval_index, const sign sg) {

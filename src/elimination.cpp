@@ -54,6 +54,10 @@ namespace lqe {
     }
 
     int expr_index = t.column_of(atm.expr());
+    if (expr_index < 0) {
+      return t.all_intervals();
+    }
+
     for (int i = 0; i < t.num_rows(); i++) {
       if ((t.sign_on_interval(expr_index, i) == allowed_1) ||
 	  (t.sign_on_interval(expr_index, i) == allowed_2)) {
@@ -95,18 +99,60 @@ namespace lqe {
   }
 
   std::vector<order>
-  all_viable_orders(const int variable,
-		    const std::vector<linear_expr>& exprs,
-		    const formula& f) {
+  all_viable_eager(const int variable,
+		   const std::vector<linear_expr>& exprs,
+		   const formula& f) {
     vector<order> acceptable;
+
     for (auto& order : all_orders(inds(exprs))) {
+
       sign_table st(variable, exprs, order);
+
       if (is_sat_wrt_table(st, &f)) {
 	acceptable.push_back(order);
       }
+
     }
 
     return acceptable;
+  }
+  
+  std::vector<order>
+  all_viable_orders(const int variable,
+		    const std::vector<linear_expr>& exprs,
+		    const formula& f) {
+
+    vector<order> last_orders = {{{0}}};
+    vector<order> next_orders;
+    for (int i = 1; i < exprs.size(); i++) {
+
+      vector<linear_expr> expr_subset_im1;
+      for (int j = 0; j < i; j++) {
+      	expr_subset_im1.push_back(exprs[j]);
+      }
+
+      for (auto& current_ord : last_orders) {
+	sign_table st(variable, expr_subset_im1, current_ord);
+
+	if (is_sat_wrt_table(st, &f)) {
+	  concat(next_orders, update_orders(i, current_ord));
+	}
+      }
+
+      last_orders = next_orders;
+      next_orders = {};
+    }
+
+
+
+    // TODO: Add final filter step for each prior order
+    // sign_table st(variable, expr_subset_im1, current_ord);
+
+    // if (is_sat_wrt_table(st, f)) {
+    //   concat(next_orders, update_orders(i, current_ord));
+    // }
+
+    return last_orders;
   }
   
 }

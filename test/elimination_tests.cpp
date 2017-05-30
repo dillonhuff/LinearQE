@@ -124,7 +124,7 @@ namespace lqe {
 
   TEST_CASE("Stress test with twenty linear equations in 15 variables") {
     int variable = 4;
-    int num_equations = 2;
+    int num_equations = 7;
     int num_variables = 15;
 
     vector<linear_expr> exprs;
@@ -135,7 +135,17 @@ namespace lqe {
     vector<unique_ptr<formula> > fms;
     vector<formula*> fm_ptrs;
     for (auto expr : exprs) {
-      fms.push_back(mk_atom(LESS, expr));
+      int rc = rand() % 3;
+      comparator c = EQUAL;
+      if (rc == 0) {
+	c = EQUAL;
+      } else if (rc == 1) {
+	c = LESS;
+      } else {
+	c = GREATER;
+      }
+      fms.push_back(mk_atom(c, expr));
+      fm_ptrs.push_back(fms.back().get());
     }
     
     // unique_ptr<formula> p_gtz = mk_atom(LESS, p);
