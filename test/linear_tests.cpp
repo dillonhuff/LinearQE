@@ -8,7 +8,6 @@ using namespace std;
 
 namespace lqe {
 
-  // Note add constructor that handles non-zero constant values in expressions
   TEST_CASE("Add linear expressions") {
     linear_expr a(2, {{"1"}, {"2"}});
 

@@ -105,4 +105,57 @@ namespace lqe {
     REQUIRE(viable_orders.size() == 1);
   }
 
+  rational random_rational() {
+    int value = rand() % 1000 - 500;
+    return rational(std::to_string(value));
+  }
+
+  linear_expr random_linear_expression(const int num_variables) {
+    vector<rational> coeffs;
+
+    for (int i = 0; i < num_variables; i++) {
+      coeffs.push_back(random_rational());
+    }
+
+    rational c = random_rational();
+
+    return linear_expr(num_variables, coeffs, c);
+  }
+
+  TEST_CASE("Stress test with twenty linear equations in 15 variables") {
+    int variable = 4;
+    int num_equations = 2;
+    int num_variables = 15;
+
+    vector<linear_expr> exprs;
+    for (int i = 0; i < num_equations; i++) {
+      exprs.push_back(random_linear_expression(num_variables));
+    }
+
+    vector<unique_ptr<formula> > fms;
+    vector<formula*> fm_ptrs;
+    for (auto expr : exprs) {
+      fms.push_back(mk_atom(LESS, expr));
+    }
+    
+    // unique_ptr<formula> p_gtz = mk_atom(LESS, p);
+    // unique_ptr<formula> p_leq = mk_atom(GEQ, q);
+
+    unique_ptr<formula> f = mk_conjunction(fm_ptrs); //{p_gtz.get(), p_leq.get()});
+
+    vector<order> viable_orders =
+      all_viable_orders(0, exprs, *f);
+
+    cout << "# of viable orders = " << viable_orders.size() << endl;
+    
+    for (auto ord : viable_orders) {
+      print_order(ord);
+    }
+
+    for (auto& expr : exprs) {
+      cout << expr << endl;
+    }
+
+  }
+
 }
