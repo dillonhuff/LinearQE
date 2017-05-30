@@ -51,11 +51,11 @@ namespace lqe {
   }
 
   TEST_CASE("24 orders of 3 roots") {
-    vector<order> orders = all_orders({0, 1, 2});
+    vector<order> orders = all_orders({0, 1, 2, 3, 4, 5, 6, 7, 8});
 
-    for (auto ord : orders) {
-      print_order(ord);
-    }
+    // for (auto ord : orders) {
+    //   print_order(ord);
+    // }
 
     SECTION("All orders have 3 elements total") {
       for (auto ord : orders) {
