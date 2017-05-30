@@ -166,7 +166,7 @@ namespace lqe {
 
   TEST_CASE("Stress test with twenty linear equations in 15 variables") {
     int variable = 4;
-    int num_equations = 10;
+    int num_equations = 17;
     int num_variables = 15;
 
     vector<linear_expr> exprs;
