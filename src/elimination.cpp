@@ -14,11 +14,11 @@ namespace lqe {
     vector<int> vals = t.all_intervals();
     for (auto clause : atm) {
       auto intervals = sat_intervals_wrt_table(t, *clause);
-      cout << "Sat intervals on clause = ";
-      for (auto i : intervals) {
-	cout << i << " ";
-      }
-      cout << endl;
+      // cout << "Sat intervals on clause = ";
+      // for (auto i : intervals) {
+      // 	cout << i << " ";
+      // }
+      // cout << endl;
 
       vals = intersection(vals, intervals);
     }
@@ -61,7 +61,7 @@ namespace lqe {
 
     int expr_index = t.column_of(atm.expr());
     if (expr_index < 0) {
-      cout << "Table does not contain " << atm.expr() << endl;
+      //cout << "Table does not contain " << atm.expr() << endl;
       return t.all_intervals();
     }
 
@@ -130,14 +130,14 @@ namespace lqe {
 		    const formula& f) {
 
     vector<order> last_orders = {{{0}}};
-    vector<order> next_orders;
     for (int i = 1; i < exprs.size(); i++) {
-
+      cout << "i = " << i << " # of orders = " << last_orders.size() << endl;
       vector<linear_expr> expr_subset_im1;
       for (int j = 0; j < i; j++) {
       	expr_subset_im1.push_back(exprs[j]);
       }
 
+      vector<order> next_orders;
       for (auto& current_ord : last_orders) {
 	sign_table st(variable, expr_subset_im1, current_ord);
 
@@ -147,9 +147,10 @@ namespace lqe {
       }
 
       last_orders = next_orders;
-      next_orders = {};
+
     }
 
+    cout << "# of orders before postprocessing = " << last_orders.size() << endl;
 
     vector<order> acceptable;
     for (auto& current_ord : last_orders) {

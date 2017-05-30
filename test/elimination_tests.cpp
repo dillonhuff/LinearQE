@@ -96,7 +96,6 @@ namespace lqe {
     unique_ptr<formula> f = mk_conjunction({p_gtz.get(), p_leq.get()});
 
     SECTION("Is possibly true under partial set {p}") {
-      cout << "Starting partial test" << endl;
       vector<linear_expr> sub{p};
       sign_table st(0, sub, {{0}});
 
@@ -111,10 +110,10 @@ namespace lqe {
       vector<order> viable_orders =
 	all_viable_orders(0, {p, q}, *f);
 
-      cout << "viable orders" << endl;
-      for (auto ord : viable_orders) {
-	print_order(ord);
-      }
+      // cout << "viable orders" << endl;
+      // for (auto ord : viable_orders) {
+      // 	print_order(ord);
+      // }
 
       REQUIRE(viable_orders.size() == 1);
     }
@@ -137,51 +136,81 @@ namespace lqe {
     return linear_expr(num_variables, coeffs, c);
   }
 
-  // TEST_CASE("Stress test with twenty linear equations in 15 variables") {
-  //   int variable = 4;
-  //   int num_equations = 7;
-  //   int num_variables = 15;
+  std::string redlog_string(const comparator c) {
+    switch (c) {
+    case GREATER:
+      return ">";
+    case LESS:
+      return "<";
+    case EQUAL:
+      return "=";
+    case LEQ:
+      return "<=";
+    case GEQ:
+      return ">=";
+    default:
+      assert(false);
+    }
+  }
 
-  //   vector<linear_expr> exprs;
-  //   for (int i = 0; i < num_equations; i++) {
-  //     exprs.push_back(random_linear_expression(num_variables));
-  //   }
+  void print_formula_redlog(const formula& f) {
+    assert(f.formula_type() == FM_CONJUNCTION);
+    auto fc = static_cast<const conjunction&>(f);
+    for (auto clause : fc) {
+      assert(clause->formula_type() == FM_ATOM);
+      auto clause_atm = static_cast<const atom*>(clause);
+      cout << "( " << clause_atm->expr() << " " << redlog_string(clause_atm->predicate()) << " 0 ) and ";
+    }
+    cout << endl;
+  }
 
-  //   vector<unique_ptr<formula> > fms;
-  //   vector<formula*> fm_ptrs;
-  //   for (auto expr : exprs) {
-  //     int rc = rand() % 3;
-  //     comparator c = EQUAL;
-  //     if (rc == 0) {
-  // 	c = EQUAL;
-  //     } else if (rc == 1) {
-  // 	c = LESS;
-  //     } else {
-  // 	c = GREATER;
-  //     }
-  //     fms.push_back(mk_atom(c, expr));
-  //     fm_ptrs.push_back(fms.back().get());
-  //   }
+  TEST_CASE("Stress test with twenty linear equations in 15 variables") {
+    int variable = 4;
+    int num_equations = 10;
+    int num_variables = 15;
+
+    vector<linear_expr> exprs;
+    for (int i = 0; i < num_equations; i++) {
+      exprs.push_back(random_linear_expression(num_variables));
+    }
+
+    vector<unique_ptr<formula> > fms;
+    vector<formula*> fm_ptrs;
+    for (auto expr : exprs) {
+      int rc = rand() % 3;
+      comparator c = EQUAL;
+      if (rc == 0) {
+  	c = EQUAL;
+      } else if (rc == 1) {
+  	c = LESS;
+      } else {
+  	c = GREATER;
+      }
+      fms.push_back(mk_atom(c, expr));
+      fm_ptrs.push_back(fms.back().get());
+    }
     
-  //   // unique_ptr<formula> p_gtz = mk_atom(LESS, p);
-  //   // unique_ptr<formula> p_leq = mk_atom(GEQ, q);
+    // unique_ptr<formula> p_gtz = mk_atom(LESS, p);
+    // unique_ptr<formula> p_leq = mk_atom(GEQ, q);
 
-  //   unique_ptr<formula> f = mk_conjunction(fm_ptrs); //{p_gtz.get(), p_leq.get()});
+    unique_ptr<formula> f = mk_conjunction(fm_ptrs); //{p_gtz.get(), p_leq.get()});
 
-  //   vector<order> viable_orders =
-  //     all_viable_orders(0, exprs, *f);
+    print_formula_redlog(*f);
 
-  //   cout << "# of viable orders = " << viable_orders.size() << endl;
+    vector<order> viable_orders =
+      all_viable_orders(0, exprs, *f);
+
+    cout << "# of viable orders = " << viable_orders.size() << endl;
     
-  //   for (auto ord : viable_orders) {
-  //     print_order(ord);
-  //   }
+    // for (auto ord : viable_orders) {
+    //   print_order(ord);
+    // }
 
-  //   for (auto& expr : exprs) {
-  //     cout << expr << endl;
-  //   }
+    // for (auto& expr : exprs) {
+    //   cout << expr << endl;
+    // }
 
-  // }
+  }
 
   
 }
