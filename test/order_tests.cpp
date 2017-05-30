@@ -8,27 +8,6 @@ using namespace std;
 
 namespace lqe {
 
-  int total_elements(const order& ord) {
-    int elems = 0;
-
-    for (int i = 0; i < ord.size(); i++) {
-      elems += ord[i].size();
-    }
-
-    return elems;
-  }
-
-  void print_order(const order& ord) {
-    for (int i = 0; i < ord.size(); i++) {
-      cout << "[ ";
-      for (int j = 0; j < ord[i].size(); j++) {
-	cout << ord[i][j] << " ";
-      }
-      cout << "] ";
-    }
-    cout << endl;
-  }
-
   TEST_CASE("3 orders of 2 roots") {
     vector<order> orders = update_orders(1, {{0}});
 
@@ -41,17 +20,17 @@ namespace lqe {
       }
     }
     
-    for (auto& ord : orders) {
-      print_order(ord);
-    }
+    // for (auto& ord : orders) {
+    //   print_order(ord);
+    // }
 
-    cout << "DONE WITH 2 test" << endl;
+    // cout << "DONE WITH 2 test" << endl;
 
     REQUIRE(orders.size() == 3);
   }
 
   TEST_CASE("24 orders of 3 roots") {
-    vector<order> orders = all_orders({0, 1, 2, 3, 4, 5, 6, 7, 8});
+    vector<order> orders = all_orders({0, 1, 2});
 
     // for (auto ord : orders) {
     //   print_order(ord);

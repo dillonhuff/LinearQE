@@ -11,4 +11,8 @@ namespace lqe {
 
   std::vector<order> all_orders(const std::vector<unsigned>& values);
 
+  int total_elements(const order& ord);
+
+  void print_order(const order& ord);
+  
 }

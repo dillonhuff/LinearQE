@@ -1,6 +1,7 @@
 #pragma once
 
 #include "formula.h"
+#include "order.h"
 #include "sign_table.h"
 
 namespace lqe {
@@ -16,4 +17,8 @@ namespace lqe {
   std::unique_ptr<formula>
   project_formula(const std::vector<int>& vars_to_remove, const formula&);
 
+  std::vector<order>
+  all_viable_orders(const int variable,
+		    const std::vector<linear_expr>& exprs,
+		    const formula& f);
 }

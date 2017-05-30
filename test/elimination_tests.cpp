@@ -86,4 +86,23 @@ namespace lqe {
     }
   }
 
+  TEST_CASE("3x + 4y - 7 < 0 and 2x - y + 3 >= 0 has one viable order") {
+    linear_expr p(2, {{"3"}, {"4"}}, {"-7"});
+    linear_expr q(2, {{"2"}, {"-1"}}, {"3"});
+
+    unique_ptr<formula> p_gtz = mk_atom(LESS, p);
+    unique_ptr<formula> p_leq = mk_atom(GEQ, q);
+
+    unique_ptr<formula> f = mk_conjunction({p_gtz.get(), p_leq.get()});
+
+    vector<order> viable_orders =
+      all_viable_orders(0, {p, q}, *f);
+
+    for (auto ord : viable_orders) {
+      print_order(ord);
+    }
+
+    REQUIRE(viable_orders.size() == 1);
+  }
+
 }

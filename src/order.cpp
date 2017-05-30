@@ -76,4 +76,25 @@ namespace lqe {
     return ords;
   }
 
+  int total_elements(const order& ord) {
+    int elems = 0;
+
+    for (int i = 0; i < ord.size(); i++) {
+      elems += ord[i].size();
+    }
+
+    return elems;
+  }
+
+  void print_order(const order& ord) {
+    for (int i = 0; i < ord.size(); i++) {
+      cout << "[ ";
+      for (int j = 0; j < ord[i].size(); j++) {
+	cout << ord[i][j] << " ";
+      }
+      cout << "] ";
+    }
+    cout << endl;
+  }
+
 }

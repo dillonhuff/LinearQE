@@ -94,4 +94,19 @@ namespace lqe {
     return mk_true();
   }
 
+  std::vector<order>
+  all_viable_orders(const int variable,
+		    const std::vector<linear_expr>& exprs,
+		    const formula& f) {
+    vector<order> acceptable;
+    for (auto& order : all_orders(inds(exprs))) {
+      sign_table st(variable, exprs, order);
+      if (is_sat_wrt_table(st, &f)) {
+	acceptable.push_back(order);
+      }
+    }
+
+    return acceptable;
+  }
+  
 }
