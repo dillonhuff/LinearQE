@@ -29,9 +29,15 @@ namespace lqe {
   };
 
   class conjunction : public formula {
+  protected:
+    std::vector<formula*> fms;
+    
   public:
-    conjunction(const std::vector<formula*>& fms) {
+    conjunction(const std::vector<formula*>& p_fms) : fms(p_fms) {
     }
+
+    std::vector<formula*>::const_iterator begin() const { return std::begin(fms); }
+    std::vector<formula*>::const_iterator end() const { return std::end(fms); }
 
     fm_type formula_type() const { return FM_CONJUNCTION; }
   };

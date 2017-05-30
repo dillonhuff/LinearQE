@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cassert>
+#include <numeric>
 
 #include "linear_expr.h"
 
@@ -73,6 +74,13 @@ namespace lqe {
     sign sign_on_interval(const int expr_index, const int interval_index) const {
       return signs[expr_index*num_rows() + interval_index];
     }
+
+    std::vector<int> all_intervals() const {
+      std::vector<int> len(num_rows());
+      std::iota(begin(len), end(len), 1);
+      return len;
+    }
+
   };
 
 }

@@ -2,14 +2,25 @@
 
 #include <cassert>
 
+#include "algorithm.h"
+
 using namespace std;
 
 namespace lqe {
 
   std::vector<int>
+  sat_intervals_wrt_table(const sign_table& t,
+			  const formula& f);
+
+  std::vector<int>
   conjunction_sat_intervals_wrt_table(const sign_table& t,
 				      const conjunction& atm) {
-    return {};
+    vector<int> vals = t.all_intervals();
+    for (auto clause : atm) {
+      auto intervals = sat_intervals_wrt_table(t, *clause);
+      vals = intersection(vals, intervals);
+    }
+    return vals;
   }
   
   std::vector<int>
