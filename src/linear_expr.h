@@ -9,13 +9,21 @@ namespace lqe {
 
   class linear_expr {
     std::vector<rational> coeffs;
+    rational c;
 
   public:
     linear_expr(const int num_vars, const std::vector<rational>& p_coeffs) :
-      coeffs(p_coeffs) {
+      coeffs(p_coeffs), c("0") {
       
     }
 
+    linear_expr(const int num_vars,
+		const std::vector<rational>& p_coeffs,
+		const rational& p_c) :
+      coeffs(p_coeffs), c(p_c) {
+      
+    }
+    
     sign sign_at_infinity(const int variable) const {
       const rational& term = get_coeff(variable);
       int sg = term.sign();
