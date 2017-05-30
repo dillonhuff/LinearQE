@@ -151,15 +151,17 @@ namespace lqe {
     }
 
 
+    vector<order> acceptable;
+    for (auto& current_ord : last_orders) {
+      sign_table st(variable, exprs, current_ord);
 
-    // TODO: Add final filter step for each prior order
-    // sign_table st(variable, expr_subset_im1, current_ord);
+      if (is_sat_wrt_table(st, &f)) {
+	acceptable.push_back(current_ord);
+	//concat(next_orders, update_orders(i, current_ord));
+      }
+    }
 
-    // if (is_sat_wrt_table(st, f)) {
-    //   concat(next_orders, update_orders(i, current_ord));
-    // }
-
-    return last_orders;
+    return acceptable;
   }
   
 }

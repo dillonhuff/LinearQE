@@ -111,6 +111,10 @@ namespace lqe {
       vector<order> viable_orders =
 	all_viable_orders(0, {p, q}, *f);
 
+      cout << "viable orders" << endl;
+      for (auto ord : viable_orders) {
+	print_order(ord);
+      }
 
       REQUIRE(viable_orders.size() == 1);
     }
