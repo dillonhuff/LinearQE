@@ -4,7 +4,7 @@
 
 namespace lqe {
 
-  enum comparator { GREATER, LESS, EQUAL };
+  enum comparator { GREATER, LESS, EQUAL, LEQ, GEQ };
 
   enum fm_type { FM_ATOM, FM_CONJUNCTION, FM_DISJUNCTION, FM_NEGATION };
 
