@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cassert>
+#include <iostream>
 #include <vector>
 
 #include "rational.h"
@@ -37,6 +39,27 @@ namespace lqe {
       return coeffs[i];
     }
 
+    int num_vars() const {
+      return coeffs.size();
+    }
+
+    const rational& constant() const { return c; }
+
+    bool equals(const linear_expr& r) const {
+      assert(num_vars() == r.num_vars());
+
+      if (c != r.c) {
+	return false;
+      }
+
+      for (int i = 0; i < r.num_vars(); i++) {
+	if (get_coeff(i) != r.get_coeff(i)) {
+	  return false;
+	}
+      }
+
+      return true;
+    }
   };
 
   inline linear_expr operator+(const linear_expr& l, const linear_expr& r) {
@@ -44,8 +67,9 @@ namespace lqe {
   }
 
   inline bool operator==(const linear_expr& l, const linear_expr& r) {
-    return true;
+    return l.equals(r);
   }
 
+  std::ostream& operator<<(std::ostream& out, const linear_expr& expr);
 
 }

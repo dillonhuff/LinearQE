@@ -9,10 +9,6 @@ using namespace std;
 namespace lqe {
 
   std::vector<int>
-  sat_intervals_wrt_table(const sign_table& t,
-			  const formula& f);
-
-  std::vector<int>
   conjunction_sat_intervals_wrt_table(const sign_table& t,
 				      const conjunction& atm) {
     vector<int> vals = t.all_intervals();
