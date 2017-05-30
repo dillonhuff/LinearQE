@@ -78,7 +78,7 @@ namespace lqe {
 
     std::vector<int> all_intervals() const {
       std::vector<int> len(num_rows());
-      std::iota(begin(len), end(len), 1);
+      std::iota(begin(len), end(len), 0);
       return len;
     }
 

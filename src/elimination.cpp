@@ -14,6 +14,12 @@ namespace lqe {
     vector<int> vals = t.all_intervals();
     for (auto clause : atm) {
       auto intervals = sat_intervals_wrt_table(t, *clause);
+      cout << "Sat intervals on clause = ";
+      for (auto i : intervals) {
+	cout << i << " ";
+      }
+      cout << endl;
+
       vals = intersection(vals, intervals);
     }
     return vals;
@@ -55,6 +61,7 @@ namespace lqe {
 
     int expr_index = t.column_of(atm.expr());
     if (expr_index < 0) {
+      cout << "Table does not contain " << atm.expr() << endl;
       return t.all_intervals();
     }
 

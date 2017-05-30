@@ -86,7 +86,7 @@ namespace lqe {
     }
   }
 
-  TEST_CASE("3x + 4y - 7 < 0 and 2x - y + 3 >= 0 has one viable order") {
+  TEST_CASE("3x + 4y - 7 < 0 and 2x - y + 3 >= 0") {
     linear_expr p(2, {{"3"}, {"4"}}, {"-7"});
     linear_expr q(2, {{"2"}, {"-1"}}, {"3"});
 
@@ -95,14 +95,25 @@ namespace lqe {
 
     unique_ptr<formula> f = mk_conjunction({p_gtz.get(), p_leq.get()});
 
-    vector<order> viable_orders =
-      all_viable_orders(0, {p, q}, *f);
+    SECTION("Is possibly true under partial set {p}") {
+      cout << "Starting partial test" << endl;
+      vector<linear_expr> sub{p};
+      sign_table st(0, sub, {{0}});
+
+      REQUIRE(is_sat_wrt_table(st, f.get()));
+    }
 
     // for (auto ord : viable_orders) {
     //   print_order(ord);
     // }
 
-    REQUIRE(viable_orders.size() == 1);
+    SECTION("Has one viable order") {
+      vector<order> viable_orders =
+	all_viable_orders(0, {p, q}, *f);
+
+
+      REQUIRE(viable_orders.size() == 1);
+    }
   }
 
   rational random_rational() {
@@ -122,50 +133,51 @@ namespace lqe {
     return linear_expr(num_variables, coeffs, c);
   }
 
-  TEST_CASE("Stress test with twenty linear equations in 15 variables") {
-    int variable = 4;
-    int num_equations = 7;
-    int num_variables = 15;
+  // TEST_CASE("Stress test with twenty linear equations in 15 variables") {
+  //   int variable = 4;
+  //   int num_equations = 7;
+  //   int num_variables = 15;
 
-    vector<linear_expr> exprs;
-    for (int i = 0; i < num_equations; i++) {
-      exprs.push_back(random_linear_expression(num_variables));
-    }
+  //   vector<linear_expr> exprs;
+  //   for (int i = 0; i < num_equations; i++) {
+  //     exprs.push_back(random_linear_expression(num_variables));
+  //   }
 
-    vector<unique_ptr<formula> > fms;
-    vector<formula*> fm_ptrs;
-    for (auto expr : exprs) {
-      int rc = rand() % 3;
-      comparator c = EQUAL;
-      if (rc == 0) {
-	c = EQUAL;
-      } else if (rc == 1) {
-	c = LESS;
-      } else {
-	c = GREATER;
-      }
-      fms.push_back(mk_atom(c, expr));
-      fm_ptrs.push_back(fms.back().get());
-    }
+  //   vector<unique_ptr<formula> > fms;
+  //   vector<formula*> fm_ptrs;
+  //   for (auto expr : exprs) {
+  //     int rc = rand() % 3;
+  //     comparator c = EQUAL;
+  //     if (rc == 0) {
+  // 	c = EQUAL;
+  //     } else if (rc == 1) {
+  // 	c = LESS;
+  //     } else {
+  // 	c = GREATER;
+  //     }
+  //     fms.push_back(mk_atom(c, expr));
+  //     fm_ptrs.push_back(fms.back().get());
+  //   }
     
-    // unique_ptr<formula> p_gtz = mk_atom(LESS, p);
-    // unique_ptr<formula> p_leq = mk_atom(GEQ, q);
+  //   // unique_ptr<formula> p_gtz = mk_atom(LESS, p);
+  //   // unique_ptr<formula> p_leq = mk_atom(GEQ, q);
 
-    unique_ptr<formula> f = mk_conjunction(fm_ptrs); //{p_gtz.get(), p_leq.get()});
+  //   unique_ptr<formula> f = mk_conjunction(fm_ptrs); //{p_gtz.get(), p_leq.get()});
 
-    vector<order> viable_orders =
-      all_viable_orders(0, exprs, *f);
+  //   vector<order> viable_orders =
+  //     all_viable_orders(0, exprs, *f);
 
-    cout << "# of viable orders = " << viable_orders.size() << endl;
+  //   cout << "# of viable orders = " << viable_orders.size() << endl;
     
-    for (auto ord : viable_orders) {
-      print_order(ord);
-    }
+  //   for (auto ord : viable_orders) {
+  //     print_order(ord);
+  //   }
 
-    for (auto& expr : exprs) {
-      cout << expr << endl;
-    }
+  //   for (auto& expr : exprs) {
+  //     cout << expr << endl;
+  //   }
 
-  }
+  // }
 
+  
 }
