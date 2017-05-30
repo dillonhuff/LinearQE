@@ -14,9 +14,16 @@ namespace lqe {
   };
 
   class atom : public formula {
+  protected:
+    comparator c;
+    linear_expr lx;
+
   public:
-    atom(const comparator c, const linear_expr& lx) {
-    }
+    atom(const comparator p_c, const linear_expr& p_lx) : c(p_c), lx(p_lx) {}
+
+    comparator predicate() const { return c; }
+
+    const linear_expr& expr() const { return lx; }
 
     fm_type formula_type() const { return FM_ATOM; }
   };

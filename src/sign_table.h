@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cassert>
+
 #include "linear_expr.h"
 
 namespace lqe {
@@ -7,12 +9,14 @@ namespace lqe {
   class sign_table {
   protected:
     std::vector<sign> signs;
+    std::vector<linear_expr> column_labels;
     int nrows, ncols;
 
   public:
     sign_table(const int variable,
 	       const std::vector<linear_expr>& exprs,
-	       const std::vector<std::vector<unsigned>>& order) {
+	       const std::vector<std::vector<unsigned>>& order) :
+      column_labels(exprs) {
       nrows = (order.size() - 1) + order.size() + 2;
       ncols = exprs.size();
 
@@ -46,6 +50,16 @@ namespace lqe {
 	  
 	}
       }
+    }
+
+    int column_of(const linear_expr& l) const {
+      for (int i = 0; i < column_labels.size(); i++) {
+	if (column_labels[i] == l) {
+	  return i;
+	}
+      }
+
+      assert(false);
     }
 
     void set_sign(const int expr_index, const int interval_index, const sign sg) {
