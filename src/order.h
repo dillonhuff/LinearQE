@@ -1,9 +1,10 @@
 #pragma once
 
-#include "linear_expr.h"
+#include <vector>
 
 namespace lqe {
 
+  typedef std::vector<unsigned> equivalence_group;
   typedef std::vector<std::vector<unsigned> > order;
 
   std::vector<order> update_orders(const unsigned i, const order& order);

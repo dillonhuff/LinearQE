@@ -1,5 +1,6 @@
 #include "catch.hpp"
 
+#include "linear_expr.h"
 #include "order.h"
 
 using namespace std;
