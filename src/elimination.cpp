@@ -18,6 +18,17 @@ namespace lqe {
     }
     return vals;
   }
+
+  std::vector<int>
+  disjunction_sat_intervals_wrt_table(const sign_table& t,
+				      const disjunction& atm) {
+    vector<int> vals = {};
+    for (auto clause : atm) {
+      auto intervals = sat_intervals_wrt_table(t, *clause);
+      concat(vals, intervals);
+    }
+    return vals;
+  }
   
   std::vector<int>
   atom_sat_intervals_wrt_table(const sign_table& t,
@@ -63,7 +74,9 @@ namespace lqe {
       return conjunction_sat_intervals_wrt_table(t,
 						 static_cast<const conjunction&>(f));
     case FM_DISJUNCTION:
-      return {};
+      return disjunction_sat_intervals_wrt_table(t,
+						 static_cast<const disjunction&>(f));
+
     case FM_NEGATION:
       return {};
     default:
@@ -77,7 +90,7 @@ namespace lqe {
   }
 
   std::unique_ptr<formula>
-  project_formula(const std::vector<int>& vars_to_remove, const formula&) {
+  project_formula(const std::vector<int>& vars_to_remove, const formula& fm) {
     return mk_true();
   }
 

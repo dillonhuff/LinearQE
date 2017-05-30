@@ -61,7 +61,7 @@ namespace lqe {
     REQUIRE(is_sat_wrt_table(st, f.get()));
   }
   
-  TEST_CASE("exists y, x. (3x + 4y + 2 = 0 and 3x + 4y + 7 < 0) or (-2x + 0y - 2 = 0)") {
+  TEST_CASE("(3x + 4y + 2 = 0 and 3x + 4y + 7 < 0) or (-2x + 0y - 2 = 0)") {
     linear_expr p1(2, {{"3"}, {"4"}}, {"2"});
     linear_expr p2(2, {{"3"}, {"4"}}, {"7"});
     linear_expr p3(2, {{"-2"}, {"0"}}, {"-2"});
@@ -73,9 +73,17 @@ namespace lqe {
     auto conj = mk_conjunction({p1_eq.get(), p2_lt.get()});
     auto fm = mk_disjunction({conj.get(), p3_lt.get()});
 
-    unique_ptr<formula> result = project_formula({0, 1}, *(fm.get()));
+    SECTION("Can be satisifed along x") {
+      sign_table st(0, {p1, p2, p3}, {{0}, {1}, {2}});
 
-    REQUIRE(result->formula_type() == FM_TRUE);
+      REQUIRE(is_sat_wrt_table(st, fm.get()));
+    }
+
+    SECTION("Decides to true") {
+      unique_ptr<formula> result = project_formula({0, 1}, *(fm.get()));
+
+      REQUIRE(result->formula_type() == FM_TRUE);
+    }
   }
 
 }
