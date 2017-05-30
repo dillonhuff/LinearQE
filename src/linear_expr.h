@@ -63,7 +63,16 @@ namespace lqe {
   };
 
   inline linear_expr operator+(const linear_expr& l, const linear_expr& r) {
-    return l;
+    assert(l.num_vars() == r.num_vars());
+
+    std::vector<rational> sum_coeffs;
+    for (int i = 0; i < r.num_vars(); i++) {
+      sum_coeffs.push_back(l.get_coeff(i) + r.get_coeff(i));
+    }
+
+    auto ct = l.constant() + r.constant();
+
+    return linear_expr(l.num_vars(), sum_coeffs, ct);
   }
 
   inline bool operator==(const linear_expr& l, const linear_expr& r) {
