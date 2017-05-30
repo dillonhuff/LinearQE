@@ -3,6 +3,7 @@
 #include "catch.hpp"
 
 #include "linear_expr.h"
+#include "elimination.h"
 #include "formula.h"
 #include "sign_table.h"
 
@@ -17,6 +18,6 @@ namespace lqe {
 
     unique_ptr<formula> f = unique_ptr<formula>(new atom(GREATER, x));
 
-    
+    REQUIRE(is_sat_wrt_table(st, f.get()));
   }
 }
