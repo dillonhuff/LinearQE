@@ -1,5 +1,3 @@
-#include <memory>
-
 #include <iostream>
 
 #include "catch.hpp"
@@ -45,22 +43,39 @@ namespace lqe {
     unique_ptr<formula> p_gtz = unique_ptr<formula>(new atom(LESS, p));
     unique_ptr<formula> p_leq = unique_ptr<formula>(new atom(GEQ, q));
 
-    cout << "Less than intervals: " << endl;
-    for (auto i : sat_intervals_wrt_table(st, *(p_gtz.get()))) {
-      cout << i << ", ";
-    }
-    cout << endl;
+    // cout << "Less than intervals: " << endl;
+    // for (auto i : sat_intervals_wrt_table(st, *(p_gtz.get()))) {
+    //   cout << i << ", ";
+    // }
+    // cout << endl;
 
-    cout << "GEQ than intervals: " << endl;
-    for (auto i : sat_intervals_wrt_table(st, *(p_leq.get()))) {
-      cout << i << ", ";
-    }
-    cout << endl;
+    // cout << "GEQ than intervals: " << endl;
+    // for (auto i : sat_intervals_wrt_table(st, *(p_leq.get()))) {
+    //   cout << i << ", ";
+    // }
+    // cout << endl;
     
     unique_ptr<formula> f =
       unique_ptr<formula>(new conjunction({p_gtz.get(), p_leq.get()}));
 
     REQUIRE(is_sat_wrt_table(st, f.get()));
+  }
+  
+  TEST_CASE("exists y, x. (3x + 4y + 2 = 0 and 3x + 4y + 7 < 0) or (-2x + 0y - 2 = 0)") {
+    linear_expr p1(2, {{"3"}, {"4"}}, {"2"});
+    linear_expr p2(2, {{"3"}, {"4"}}, {"7"});
+    linear_expr p3(2, {{"-2"}, {"0"}}, {"-2"});
+
+    auto p1_eq = mk_atom(EQUAL, p1);
+    auto p2_lt = mk_atom(LESS, p2);
+    auto p3_lt = mk_atom(EQUAL, p3);
+
+    auto conj = mk_conjunction({p1_eq.get(), p2_lt.get()});
+    auto fm = mk_disjunction({conj.get(), p3_lt.get()});
+
+    unique_ptr<formula> result = project_formula({0, 1}, *(fm.get()));
+
+    REQUIRE(result->formula_type() == FM_TRUE);
   }
 
 }

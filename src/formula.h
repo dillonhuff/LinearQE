@@ -1,12 +1,14 @@
 #pragma once
 
+#include <memory>
+
 #include "linear_expr.h"
 
 namespace lqe {
 
   enum comparator { GREATER, LESS, EQUAL, LEQ, GEQ };
 
-  enum fm_type { FM_ATOM, FM_CONJUNCTION, FM_DISJUNCTION, FM_NEGATION };
+  enum fm_type { FM_ATOM, FM_CONJUNCTION, FM_DISJUNCTION, FM_NEGATION, FM_TRUE, FM_FALSE };
 
   class formula {
   public:
@@ -41,4 +43,35 @@ namespace lqe {
 
     fm_type formula_type() const { return FM_CONJUNCTION; }
   };
+
+  class disjunction : public formula {
+  protected:
+    std::vector<formula*> fms;
+    
+  public:
+    disjunction(const std::vector<formula*>& p_fms) : fms(p_fms) {
+    }
+
+    std::vector<formula*>::const_iterator begin() const { return std::begin(fms); }
+    std::vector<formula*>::const_iterator end() const { return std::end(fms); }
+
+    fm_type formula_type() const { return FM_DISJUNCTION; }
+  };
+
+  class true_fm : public formula {
+  public:
+    fm_type formula_type() const { return FM_TRUE; }
+  };
+  
+  class false_fm : public formula {
+  public:
+    fm_type formula_type() const { return FM_FALSE; }
+  };
+
+  std::unique_ptr<atom> mk_atom(const comparator c, const linear_expr& lx);
+  std::unique_ptr<conjunction> mk_conjunction(const std::vector<formula*>& lx);
+  std::unique_ptr<disjunction> mk_disjunction(const std::vector<formula*>& lx);
+  std::unique_ptr<false_fm> mk_false();
+  std::unique_ptr<true_fm> mk_true();
+  
 }

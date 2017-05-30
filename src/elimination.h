@@ -13,4 +13,7 @@ namespace lqe {
 			  const formula& f);
 
 
+  std::unique_ptr<formula>
+  project_formula(const std::vector<int>& vars_to_remove, const formula&);
+
 }

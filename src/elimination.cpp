@@ -76,4 +76,9 @@ namespace lqe {
     return sat_intervals_wrt_table(t, *f).size() > 0;
   }
 
+  std::unique_ptr<formula>
+  project_formula(const std::vector<int>& vars_to_remove, const formula&) {
+    return mk_true();
+  }
+
 }
