@@ -1,6 +1,7 @@
 #pragma once
 
 #include <gmp.h>
+#include <iostream>
 #include <string>
 
 namespace lqe {
@@ -37,8 +38,17 @@ namespace lqe {
       mpq_add(sum, val, l.val);
       return rational(sum);
     }
+
+    void print(std::ostream& out) const {
+      out << val;
+    }
     
   };
+
+  inline std::ostream& operator<<(std::ostream& out, const rational& r) {
+    r.print(out);
+    return out;
+  }
 
   inline rational operator+(const rational& l, const rational& r) {
     return l.plus(r);

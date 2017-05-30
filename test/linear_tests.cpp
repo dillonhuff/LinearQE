@@ -4,6 +4,8 @@
 
 #include "linear_expr.h"
 
+using namespace std;
+
 namespace lqe {
 
   // Note add constructor that handles non-zero constant values in expressions
