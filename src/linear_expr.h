@@ -68,6 +68,10 @@ namespace lqe {
       return linear_expr(num_vars(), coeffs, new_c);
     }
 
+    linear_expr add_constant(const rational& r) {
+      return linear_expr(num_vars(), coeffs, constant() + r);
+    }
+
     linear_expr symbolic_root(const int i) const;
   };
 

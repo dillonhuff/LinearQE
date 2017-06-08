@@ -170,17 +170,47 @@ namespace lqe {
     return {};
   }
 
+  formula* substitute_variable(const formula& f,
+			       const int i,
+			       const linear_expr& root) {
+    return nullptr;
+  }
+
   std::unique_ptr<formula> ferrante_rackoff(const int i, const formula& f) {
     vector<linear_expr> exprs = collect_expressions(f);
 
     vector<formula*> fms;
     // Add zero points intervals
+    for (auto& expr : exprs) {
+      linear_expr root = expr.symbolic_root(i);
+      fms.push_back(substitute_variable(f, i, root));
+    }
 
     // Add midpoint interval tests
+    for (int j = 0; j < exprs.size(); j++) {
+      for (int k = 0; k < exprs.size(); k++) {
+	if (j != k) {
+	  const linear_expr& ej = exprs[j];
+	  const linear_expr& ek = exprs[k];
+	  linear_expr midpoint = (ej + ek).scalar_times({"1/2"});
+	  fms.push_back(substitute_variable(f, i, midpoint));
+	}
+      }
+    }
 
     // Add negative infinity points
+    for (auto& expr : exprs) {
+      linear_expr root = expr.symbolic_root(i);
+      linear_expr test_pt = root.add_constant({"-1"});
+      fms.push_back(substitute_variable(f, i, test_pt));
+    }
 
     // Add positive infinity points
+    for (auto& expr : exprs) {
+      linear_expr root = expr.symbolic_root(i);
+      linear_expr test_pt = root.add_constant({"1"});
+      fms.push_back(substitute_variable(f, i, test_pt));
+    }
     
     return mk_disjunction(fms);
   }
