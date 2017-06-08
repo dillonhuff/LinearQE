@@ -165,5 +165,9 @@ namespace lqe {
 
     return acceptable;
   }
+
+  formula* ferrante_rackoff(const int i, const formula& f) {
+    return nullptr;
+  }
   
 }

@@ -164,6 +164,29 @@ namespace lqe {
     cout << endl;
   }
 
+  TEST_CASE("Test point method, basically Ferrante-Rackoff") {
+    linear_expr p(2, {{"3"}, {"4"}}, {"-7"});
+    linear_expr q(2, {{"2"}, {"-1"}}, {"3"});
+
+    unique_ptr<formula> p_gtz = unique_ptr<formula>(new atom(LESS, p));
+    unique_ptr<formula> p_leq = unique_ptr<formula>(new atom(GEQ, q));
+
+    unique_ptr<formula> f =
+      unique_ptr<formula>(new conjunction({p_gtz.get(), p_leq.get()}));
+
+    formula* fp = f.get();
+
+    formula* qff = ferrante_rackoff(0, *fp);
+
+    linear_expr r1 = p.symbolic_root(0);
+    linear_expr r2 = q.symbolic_root(0);
+    linear_expr r2_minus_r1 = r2 - r1;
+
+    auto r2_less_r1 = mk_atom(LESS, r2_minus_r1);
+
+    REQUIRE(*qff == *(r2_less_r1.get()));
+  }
+
   // TEST_CASE("Stress test with twenty linear equations in 15 variables") {
   //   int variable = 4;
   //   int num_equations = 14;

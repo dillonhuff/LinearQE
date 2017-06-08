@@ -73,5 +73,9 @@ namespace lqe {
   std::unique_ptr<disjunction> mk_disjunction(const std::vector<formula*>& lx);
   std::unique_ptr<false_fm> mk_false();
   std::unique_ptr<true_fm> mk_true();
+
+  inline bool operator==(const formula& l, const formula& r) {
+    return true;
+  }
   
 }

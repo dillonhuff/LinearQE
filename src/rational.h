@@ -68,12 +68,20 @@ namespace lqe {
     return l.plus(r);
   }
 
+  inline rational operator*(const rational& l, const rational& r) {
+    return l.times(r);
+  }
+  
   inline rational operator/(const rational& l, const rational& r) {
     return l.divide(r);
   }
   
   inline rational operator-(const rational& l) {
     return l.times({"-1"});
+  }
+
+  inline rational operator-(const rational& l, const rational& r) {
+    return l.plus(-r);
   }
   
   inline bool operator==(const rational& l, const rational& r) {

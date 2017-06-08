@@ -21,4 +21,6 @@ namespace lqe {
   all_viable_orders(const int variable,
 		    const std::vector<linear_expr>& exprs,
 		    const formula& f);
+
+  formula* ferrante_rackoff(const int i, const formula& f);
 }

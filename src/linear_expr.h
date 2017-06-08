@@ -61,6 +61,13 @@ namespace lqe {
       return true;
     }
 
+    linear_expr scalar_times(const rational& r) const {
+      rational new_c = r*constant();
+      assert(coeffs.size() == num_vars());
+
+      return linear_expr(num_vars(), coeffs, new_c);
+    }
+
     linear_expr symbolic_root(const int i) const;
   };
 
@@ -79,6 +86,14 @@ namespace lqe {
 
   inline bool operator==(const linear_expr& l, const linear_expr& r) {
     return l.equals(r);
+  }
+
+  inline linear_expr operator-(const linear_expr& l) {
+    return l.scalar_times({"-1"});
+  }
+  
+  inline linear_expr operator-(const linear_expr& l, const linear_expr& r) {
+    return l + (-r);
   }
 
   std::ostream& operator<<(std::ostream& out, const linear_expr& expr);
