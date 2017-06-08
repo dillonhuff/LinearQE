@@ -24,7 +24,7 @@ namespace lqe {
       if (j == i) {
 	var_values.push_back({"0"});
       } else {
-	var_values.push_back({"0"});
+	var_values.push_back((-get_coeff(j)) / x_c);
       }
     }
 
