@@ -131,7 +131,7 @@ namespace lqe {
 
     vector<order> last_orders = {{{0}}};
     for (int i = 1; i < exprs.size(); i++) {
-      cout << "i = " << i << " # of orders = " << last_orders.size() << endl;
+      //cout << "i = " << i << " # of orders = " << last_orders.size() << endl;
       vector<linear_expr> expr_subset_im1;
       for (int j = 0; j < i; j++) {
       	expr_subset_im1.push_back(exprs[j]);
@@ -151,7 +151,7 @@ namespace lqe {
 
     }
 
-    cout << "# of orders before postprocessing = " << last_orders.size() << endl;
+    //cout << "# of orders before postprocessing = " << last_orders.size() << endl;
 
     vector<order> acceptable;
     for (auto& current_ord : last_orders) {
