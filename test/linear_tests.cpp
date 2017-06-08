@@ -18,4 +18,12 @@ namespace lqe {
     REQUIRE(b == correct);
   }
 
+  TEST_CASE("Compute root with respect to a variable") {
+    linear_expr a(1, {{"1"}}, {"-3"});
+    linear_expr c = a.symbolic_root(0);
+    linear_expr correct(1, {{"0"}}, {"3"});
+
+    REQUIRE(c == correct);
+  }
+
 }

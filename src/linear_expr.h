@@ -60,6 +60,8 @@ namespace lqe {
 
       return true;
     }
+
+    linear_expr symbolic_root(const int i) const;
   };
 
   inline linear_expr operator+(const linear_expr& l, const linear_expr& r) {

@@ -39,6 +39,20 @@ namespace lqe {
       return rational(sum);
     }
 
+    rational times(const rational& l) const {
+      mpq_t prod;
+      mpq_init(prod);
+      mpq_mul(prod, val, l.val);
+      return rational(prod);
+    }
+
+    rational divide(const rational& l) const {
+      mpq_t prod;
+      mpq_init(prod);
+      mpq_div(prod, val, l.val);
+      return rational(prod);
+    }
+    
     void print(std::ostream& out) const {
       out << val;
     }
@@ -54,6 +68,14 @@ namespace lqe {
     return l.plus(r);
   }
 
+  inline rational operator/(const rational& l, const rational& r) {
+    return l.divide(r);
+  }
+  
+  inline rational operator-(const rational& l) {
+    return l.times({"-1"});
+  }
+  
   inline bool operator==(const rational& l, const rational& r) {
     return l.equals(r);
   }

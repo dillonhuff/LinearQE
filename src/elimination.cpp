@@ -139,6 +139,7 @@ namespace lqe {
 
       vector<order> next_orders;
       for (auto& current_ord : last_orders) {
+	//cout << "next orders size = " << next_orders.size() << endl;
 	sign_table st(variable, expr_subset_im1, current_ord);
 
 	if (is_sat_wrt_table(st, &f)) {
