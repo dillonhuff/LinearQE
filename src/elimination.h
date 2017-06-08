@@ -22,5 +22,5 @@ namespace lqe {
 		    const std::vector<linear_expr>& exprs,
 		    const formula& f);
 
-  formula* ferrante_rackoff(const int i, const formula& f);
+  std::unique_ptr<formula> ferrante_rackoff(const int i, const formula& f);
 }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <memory>
 
 #include "linear_expr.h"
@@ -13,6 +14,7 @@ namespace lqe {
   class formula {
   public:
     virtual fm_type formula_type() const = 0;
+    virtual void print(std::ostream& out) const = 0;
   };
 
   class atom : public formula {
@@ -27,6 +29,10 @@ namespace lqe {
 
     const linear_expr& expr() const { return lx; }
 
+    void print(std::ostream& out) const {
+      out << "( " << lx << " " << " 0 )" << std::endl;
+    }
+
     fm_type formula_type() const { return FM_ATOM; }
   };
 
@@ -36,6 +42,9 @@ namespace lqe {
     
   public:
     conjunction(const std::vector<formula*>& p_fms) : fms(p_fms) {
+    }
+
+    void print(std::ostream& out) const {
     }
 
     std::vector<formula*>::const_iterator begin() const { return std::begin(fms); }
@@ -52,6 +61,8 @@ namespace lqe {
     disjunction(const std::vector<formula*>& p_fms) : fms(p_fms) {
     }
 
+    void print(std::ostream& out) const {}
+
     std::vector<formula*>::const_iterator begin() const { return std::begin(fms); }
     std::vector<formula*>::const_iterator end() const { return std::end(fms); }
 
@@ -61,11 +72,13 @@ namespace lqe {
   class true_fm : public formula {
   public:
     fm_type formula_type() const { return FM_TRUE; }
+    void print(std::ostream& out) const {}
   };
   
   class false_fm : public formula {
   public:
     fm_type formula_type() const { return FM_FALSE; }
+    void print(std::ostream& out) const {}
   };
 
   std::unique_ptr<atom> mk_atom(const comparator c, const linear_expr& lx);
@@ -77,5 +90,7 @@ namespace lqe {
   inline bool operator==(const formula& l, const formula& r) {
     return true;
   }
+
+  std::ostream& operator<<(std::ostream& out, const formula& r);
   
 }

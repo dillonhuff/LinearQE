@@ -166,8 +166,23 @@ namespace lqe {
     return acceptable;
   }
 
-  formula* ferrante_rackoff(const int i, const formula& f) {
-    return nullptr;
+  std::vector<linear_expr> collect_expressions(const formula& f) {
+    return {};
+  }
+
+  std::unique_ptr<formula> ferrante_rackoff(const int i, const formula& f) {
+    vector<linear_expr> exprs = collect_expressions(f);
+
+    vector<formula*> fms;
+    // Add zero points intervals
+
+    // Add midpoint interval tests
+
+    // Add negative infinity points
+
+    // Add positive infinity points
+    
+    return mk_disjunction(fms);
   }
   
 }

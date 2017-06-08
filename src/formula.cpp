@@ -24,4 +24,9 @@ namespace lqe {
     return unique_ptr<disjunction>(new disjunction(lx));
   }
 
+  std::ostream& operator<<(std::ostream& out, const formula& r) {
+    r.print(out);
+    return out;
+  }
+
 }

@@ -176,7 +176,7 @@ namespace lqe {
 
     formula* fp = f.get();
 
-    formula* qff = ferrante_rackoff(0, *fp);
+    auto qff = ferrante_rackoff(0, *fp);
 
     linear_expr r1 = p.symbolic_root(0);
     linear_expr r2 = q.symbolic_root(0);
@@ -184,7 +184,9 @@ namespace lqe {
 
     auto r2_less_r1 = mk_atom(LESS, r2_minus_r1);
 
-    REQUIRE(*qff == *(r2_less_r1.get()));
+    cout << *(r2_less_r1.get()) << endl;
+
+    REQUIRE(*(qff.get()) == *(r2_less_r1.get()));
   }
 
   // TEST_CASE("Stress test with twenty linear equations in 15 variables") {
